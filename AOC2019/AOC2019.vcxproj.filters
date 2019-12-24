@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="solvers">
+      <UniqueIdentifier>{4aeae88a-2aa0-4e9a-87ed-65439c3ba15b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{93692c55-2676-4c0d-a9d1-9bb222c86b85}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\solver.cpp" />
+    <ClCompile Include="src\solver_template.cpp" />
+    <ClCompile Include="src\solvers\solver3.cpp">
+      <Filter>solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\solvers\solver4.cpp">
+      <Filter>solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\solvers\solver5.cpp">
+      <Filter>solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\solvers\solver6.cpp">
+      <Filter>solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\solvers\solver7.cpp">
+      <Filter>solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\solvers\solver8.cpp">
+      <Filter>solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\solvers\solver9.cpp">
+      <Filter>solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\solvers\solver10.cpp">
+      <Filter>solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\solvers\solver11.cpp">
+      <Filter>solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\solvers\solver12.cpp">
+      <Filter>solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\solvers\solver13.cpp">
+      <Filter>solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\solvers\solver14.cpp">
+      <Filter>solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\solvers\solver15.cpp">
+      <Filter>solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\solvers\solver16.cpp">
+      <Filter>solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\solvers\solver17.cpp">
+      <Filter>solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\solvers\solver18.cpp">
+      <Filter>solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\solvers\solver19.cpp">
+      <Filter>solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\solvers\solver20.cpp">
+      <Filter>solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\solvers\solver21.cpp">
+      <Filter>solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\solvers\solver22.cpp">
+      <Filter>solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\solvers\solver23.cpp">
+      <Filter>solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\solvers\solver24.cpp">
+      <Filter>solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\solvers\solver25.cpp">
+      <Filter>solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\common\intcode_machine.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\solver.hpp" />
+    <ClInclude Include="src\common\a_star.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\intcode_machine.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\vec2.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

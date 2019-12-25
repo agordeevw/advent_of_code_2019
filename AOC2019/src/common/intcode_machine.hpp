@@ -10,7 +10,9 @@ intcode_program read_intcode_program(const char* s);
 class intcode_machine
 {
 public:
-  enum class execution_state
+  friend class intcode_machine_inspector;
+
+  enum class execution_state : int
   {
     ready = 0,
     awaiting_input = 1,
@@ -27,6 +29,10 @@ public:
   }
 
   intcode_machine(intcode_program const& program);
+  intcode_machine(intcode_machine const& other) = default;
+  intcode_machine(intcode_machine&& other) = default;
+  intcode_machine& operator=(intcode_machine const& other) = default;
+  intcode_machine& operator=(intcode_machine&& other) = default;
 
   void modify_program(uint64_t address, int64_t value);
   void push_input(int64_t value);
@@ -69,4 +75,45 @@ private:
   execution_state state = execution_state::ready;
   uint64_t ip = 0;
   int64_t relative_base = 0;
+};
+
+class intcode_machine_inspector
+{
+public:
+  intcode_machine_inspector(intcode_machine& machine) : machine(machine)
+  {
+  };
+
+  intcode_program const& program() const
+  {
+    return machine.program;
+  }
+
+  uint64_t ip() const
+  {
+    return machine.ip;
+  }
+
+  uint64_t relative_base() const
+  {
+    return machine.relative_base;
+  }
+
+  void set_ip(uint64_t value)
+  {
+    machine.ip = value;
+  }
+
+  void set_relative_base(uint64_t value)
+  {
+    machine.relative_base = value;
+  }
+
+  void set_execution_state(intcode_machine::execution_state state)
+  {
+    machine.state = state;
+  }
+
+private:
+  intcode_machine& machine;
 };

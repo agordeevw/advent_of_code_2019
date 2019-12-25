@@ -25,7 +25,7 @@ void cut_n(int64_t n, std::vector<int64_t>& deck)
 void deal_with_increment_n(int64_t n, std::vector<int64_t>& deck)
 {
   std::vector<int64_t> tmp_deck = deck;
-  uint64_t dst = 0;
+  int64_t dst = 0;
   for (uint64_t src = 0; src < deck.size(); src++)
   {
     deck[dst % deck.size()] = tmp_deck[src];
@@ -39,7 +39,58 @@ struct command
   int arg;
 };
 
-const uint64_t d = 119315717514047;
+static constexpr uint64_t m = 119315717514047;
+
+constexpr uint64_t mod_add(uint64_t x, uint64_t y)
+{
+  return (x + y) % m;
+}
+
+constexpr uint64_t mod_sub(uint64_t x, uint64_t y)
+{
+  return ((x + m) - y) % m;
+}
+
+constexpr uint64_t mod_mul(uint64_t x, uint64_t y)
+{
+  uint64_t ret = 0;
+  for (int i = 0; i < 63; i++)
+  {
+    if ((x >> i) & 1)
+    {
+      uint64_t summand = y;
+      for (int j = 0; j < i; j++)
+      {
+        summand = (summand << 1) % m;
+      }
+
+      ret = mod_add(ret, summand);
+    }
+  }
+  return ret;
+}
+
+static_assert(mod_mul(741276321786329, 127362179045133) == 2271970138446, "");
+
+constexpr uint64_t mod_exp(uint64_t x, uint64_t y)
+{
+  int64_t ret = 1;
+  int64_t a = x % m;
+  for (int i = 0; i < 63; i++)
+  {
+    if ((y >> i) & 1)
+    {
+      ret = mod_mul(ret, a);
+    }
+    a = mod_mul(a, a);
+  }
+  return ret;
+}
+
+constexpr int64_t mod_inv(int64_t x)
+{
+  return mod_exp(x, m - 2);
+}
 
 // Put solution helpers here
 } // namespace
@@ -119,39 +170,62 @@ void solver<DAY, 2>::solve(const char* input, char* output)
     while (*input++ != '\n');
   }
 
-  const uint64_t deck_size = 119315717514047;
-  const uint64_t commands_repeat = 101741582076661;
-
-  uint64_t period = 0;
-  uint64_t target_card_pos = 2020;
-  for (uint64_t i = 0; i < commands_repeat; i++)
+  struct linfunc
   {
-    for (command c : commands)
+    uint64_t a;
+    uint64_t b;
+
+    uint64_t eval(uint64_t x)
     {
-      if (c.type == 2)
-      {
-        target_card_pos = deck_size - 1 - target_card_pos;
-      }
-      else if (c.type == 1)
-      {
-        target_card_pos = (target_card_pos + deck_size - c.arg) % deck_size;
-      }
-      else if (c.type == 0)
-      {
-        uint64_t p = 0;
-        for (int j = 0; j < c.arg; j++)
-        {
-          p = (p + target_card_pos) % deck_size;
-        }
-        target_card_pos = p;
-      }
+      uint64_t ret = mod_add(mod_mul(a, x), b);
+      return ret;
     }
-    if (period > 0 && target_card_pos == 2020)
+
+    linfunc apply_to(linfunc const& other)
     {
-      printf("PERIOD: %llu\n", period);
+      uint64_t new_a = mod_mul(a, other.a);
+      uint64_t new_b = mod_add(mod_mul(a, other.b), b);
+      return {new_a, new_b};
     }
-    period++;
+  };
+
+  linfunc shuffle = { 1, 0 };
+  for (command c : commands)
+  {
+    if (c.type == 2) // deal into new stack
+    {
+      shuffle = linfunc{ m - 1, m - 1 }.apply_to(shuffle);
+    }
+    else if (c.type == 1) // cut n
+    {
+      shuffle = linfunc{ 1, (uint64_t((int64_t)m - c.arg)) }.apply_to(shuffle);
+    }
+    else if (c.type == 0) // deal with increment n
+    {
+      shuffle = linfunc{ (uint64_t)c.arg, 0 }.apply_to(shuffle);
+    }
   }
 
-  output += sprintf(output, "%llu", target_card_pos);
+  constexpr int64_t n = 101741582076661;
+
+  output += sprintf(output, "a=%lld, b=%lld\n", shuffle.a, shuffle.b);
+
+  uint64_t a = shuffle.a;
+  uint64_t b = shuffle.b;
+  uint64_t a_to_n = mod_exp(a, n);
+  uint64_t ret =  
+    mod_mul(
+      mod_sub(
+        2020,
+        mod_mul(
+          b,
+          mod_mul(
+            a_to_n - 1,
+            mod_inv(a - 1)
+          )
+        )
+      ),
+      mod_inv(a_to_n)
+    );
+  output += sprintf(output, "ret=%lld\n", ret);
 }
